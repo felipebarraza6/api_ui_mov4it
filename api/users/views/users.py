@@ -13,21 +13,21 @@ from django_filters import rest_framework as filters
 
 # Permissions
 from rest_framework.permissions import (
-	AllowAny,
-	IsAuthenticated
+    AllowAny,
+    IsAuthenticated
 )
 
 
 # Models
-from api.users.models import User 
+from api.users.models import User
 # Serializers
 from api.users.serializers import ResetPasswordSerializer, UserResponseSerializer, UserLoginSerializer, UserModelSerializer, UserSignUpSerializer
-from api.learning.models import ApprovedCourse, ViewContent
-from api.learning.serializers import RetrieveApprovedCourseModelSerializer
+from api.move4it.models import ApprovedCourse, ViewContent
+from api.move4it.serializers import RetrieveApprovedCourseModelSerializer
 
 
-class UserViewSet(mixins.RetrieveModelMixin, 
-                  mixins.UpdateModelMixin, 
+class UserViewSet(mixins.RetrieveModelMixin,
+                  mixins.UpdateModelMixin,
                   mixins.ListModelMixin,
                   mixins.DestroyModelMixin,
                   viewsets.GenericViewSet,):
@@ -52,7 +52,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
     queryset = User.objects.filter(is_verified=True)
     serializer_class = UserModelSerializer
     lookup_field = 'username'
-    
 
     @action(detail=False, methods=['post'])
     def reset_password(self, request):
@@ -69,21 +68,11 @@ class UserViewSet(mixins.RetrieveModelMixin,
         serializer = UserLoginSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         user, token = serializer.save()
-        
-        id_user = UserResponseSerializer(user).data['id'] 
-
-        search_lessons_view = ViewContent.objects.filter(student=id_user).values()
-        search_approved_courses = ApprovedCourse.objects.filter(student=id_user)        
-        serializer_approved = RetrieveApprovedCourseModelSerializer(search_approved_courses, many=True) 
-        data_approved = serializer_approved.data
 
         data = {
             'user': UserResponseSerializer(user).data,
             'access_token': token,
-            'profile_data': {
-                'course_approved': data_approved,
-                'lessons_view': search_lessons_view  
-            }
+
         }
 
         return Response(data, status=status.HTTP_201_CREATED)
@@ -101,20 +90,23 @@ class UserViewSet(mixins.RetrieveModelMixin,
         response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
 
         data_user_type = {}
-        search_lessons_view = ViewContent.objects.filter(student=response.data['id']).values()
-        search_approved_courses = ApprovedCourse.objects.filter(student=response.data['id'])        
-        serializer_approved = RetrieveApprovedCourseModelSerializer(search_approved_courses, many=True) 
+        search_lessons_view = ViewContent.objects.filter(
+            student=response.data['id']).values()
+        search_approved_courses = ApprovedCourse.objects.filter(
+            student=response.data['id'])
+        serializer_approved = RetrieveApprovedCourseModelSerializer(
+            search_approved_courses, many=True)
         data_approved = serializer_approved.data
-        if(response.data['type_user']=='STU'): 
-             lessons = search_lessons_view 
-            
+        if (response.data['type_user'] == 'STU'):
+            lessons = search_lessons_view
+
         data = {
-                'user': response.data,
-                'profile_data': {
-                    'course_approved': data_approved,
-                    'lessons_view': search_lessons_view
-                }
+            'user': response.data,
+            'profile_data': {
+                'course_approved': data_approved,
+                'lessons_view': search_lessons_view
             }
+        }
 
         response.data = data
-        return response 
+        return response

@@ -14,7 +14,6 @@ import os
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -32,7 +31,6 @@ CSRF_COOKIE_HTTPONLY = True
 SECURE_BROWSER_XSS_FILTER = True
 X_FRAME_OPTIONS = 'DENY'
 
-
 # Application definition
 
 DJANGO_APPS = [
@@ -46,7 +44,7 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     'api.users',
-    'api.learning'
+    # 'api.move4it'
 ]
 
 THIRD_APPS = [
@@ -59,14 +57,14 @@ THIRD_APPS = [
 
 INSTALLED_APPS = DJANGO_APPS + LOCAL_APPS + THIRD_APPS
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+"""EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'mail.smarthydro.cl'
 EMAIL_PORT = 465
-EMAIL_USE_SSL = True 
+EMAIL_USE_SSL = True
 EMAIL_HOST_USER = 'felipebarraza@smarthydro.cl'
 EMAIL_HOST_PASSWORD = 'vhhwk2013go'
 
-DEFAULT_FROM_EMAIL = 'felipebarraza@smarthydro.cl'
+DEFAULT_FROM_EMAIL = 'felipebarraza@smarthydro.cl'"""
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -115,7 +113,7 @@ ROOT_URLCONF = 'api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR,'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -130,21 +128,25 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'api.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'postgres',
+#         'PORT': '5432'
+#     }
+# }
 DATABASES = {
-	'default': {
-    	'ENGINE': 'django.db.backends.postgresql_psycopg2',
-    	'NAME': 'postgres',
-    	'USER': 'postgres',
-    	'PASSWORD': 'postgres',
-        'HOST': 'postgres',
-        'PORT': '5432'        	
-	}
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -164,7 +166,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 LANGUAGE_CODE = 'es'
@@ -172,8 +173,6 @@ TIME_ZONE = 'America/Santiago'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
-
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
