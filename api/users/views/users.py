@@ -22,8 +22,6 @@ from rest_framework.permissions import (
 from api.users.models import User
 # Serializers
 from api.users.serializers import ResetPasswordSerializer, UserResponseSerializer, UserLoginSerializer, UserModelSerializer, UserSignUpSerializer
-from api.move4it.models import ApprovedCourse, ViewContent
-from api.move4it.serializers import RetrieveApprovedCourseModelSerializer
 
 
 class UserViewSet(mixins.RetrieveModelMixin,
@@ -89,22 +87,9 @@ class UserViewSet(mixins.RetrieveModelMixin,
         """Add extra data to the response."""
         response = super(UserViewSet, self).retrieve(request, *args, **kwargs)
 
-        data_user_type = {}
-        search_lessons_view = ViewContent.objects.filter(
-            student=response.data['id']).values()
-        search_approved_courses = ApprovedCourse.objects.filter(
-            student=response.data['id'])
-        serializer_approved = RetrieveApprovedCourseModelSerializer(
-            search_approved_courses, many=True)
-        data_approved = serializer_approved.data
-        if (response.data['type_user'] == 'STU'):
-            lessons = search_lessons_view
-
         data = {
             'user': response.data,
             'profile_data': {
-                'course_approved': data_approved,
-                'lessons_view': search_lessons_view
             }
         }
 

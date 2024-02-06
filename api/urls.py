@@ -10,7 +10,7 @@ urlpatterns = [
 
     path('admin/', admin.site.urls),
     path('api/auth/', include(('api.users.router', 'users'), namespace='users')),
-    path('api/', include(('api.move4it.router', 'move4it'), namespace='move4it')),
+    # path('api/', include(('api.move4it.router', 'move4it'), namespace='move4it')),
     path('api/password_reset/',
          include('django_rest_passwordreset.urls', namespace='password_reset')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
