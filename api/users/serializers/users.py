@@ -26,7 +26,7 @@ class UserModelSerializer(serializers.ModelSerializer):
 class UserResponseSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id','username', 'email','first_name', 'last_name', 'identification_number', 'phone_number', 'type_user')
+        fields = ('id','username', 'email','first_name', 'last_name', 'identification_number', 'phone_number', 'type_user', 'date_of_birth', 'bio')
 
 
 class ResetPasswordSerializer(serializers.Serializer):

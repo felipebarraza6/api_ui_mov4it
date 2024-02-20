@@ -30,6 +30,9 @@ class User(ModelApi, AbstractUser):
 
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name', 'identification_number', 'type_user']
 
+    date_of_birth = models.DateField(verbose_name='Fecha de nacimiento', blank=True, null=True)
+    bio = models.TextField(verbose_name='Biografía', blank=True, null=True)
+
     is_verified = models.BooleanField(
         verbose_name = 'vertificado',
         default = True,
