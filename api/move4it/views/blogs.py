@@ -41,5 +41,13 @@ class BlogViewSet(mixins.RetrieveModelMixin,
             return BlogModelSerializer
 
     filter_backends = (filters.DjangoFilterBackend,)
+
+    class FilterBlog (filters.FilterSet):
+        class Meta:
+            model = Blog
+            fields = {
+                'type': ['exact'],
+            }
+    filterset_class = FilterBlog
     queryset = Blog.objects.all()
     lookup_field = 'id'
