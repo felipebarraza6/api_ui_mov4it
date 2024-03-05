@@ -6,6 +6,7 @@ from django.contrib.auth.models import AbstractUser
 
 # Utils
 from api.utils.models import ModelApi
+from api.move4it.models import Group
 import re
 
 
@@ -55,6 +56,8 @@ class User(ModelApi, AbstractUser):
     )
 
     USERNAME_FIELD = 'email'
+    group_participation = models.ForeignKey(
+        Group, on_delete=models.CASCADE, verbose_name='Grupo de participación', null=True, blank=True)
 
     def save(self, *args, **kwargs):
         self.username = f"{str(self.first_name).lower()}.{str(self.last_name).lower()}.{self.id}"
