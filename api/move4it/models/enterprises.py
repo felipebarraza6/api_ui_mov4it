@@ -33,4 +33,9 @@ class Group(ModelApi):
         verbose_name_plural = 'Equipo'
 
     def __str__(self):
-        return ('{} - {}').format(self.enterprise.name, self.name)
+        if self.enterprise.name and self.name:
+            return f"{self.enterprise.name} - {self.name}"
+        elif self.name:
+            return self.name
+        else:
+            return ""
