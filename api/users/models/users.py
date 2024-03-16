@@ -43,8 +43,14 @@ class User(ModelApi, AbstractUser):
 
     is_verified = models.BooleanField(
         verbose_name='vertificado',
-        default=True,
+        default=False,
         help_text='Se establece en verdadero cuando el usuario ha verificado su dirección de correo electrónico'
+    )
+
+    is_leader = models.BooleanField(
+        verbose_name='es lider',
+        default=True,
+        help_text='Se establece en verdadero cuando el usuario es lider de su grupo'
     )
 
     username = models.CharField(
