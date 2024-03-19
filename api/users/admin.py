@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from api.users.models import User, Profile, ExtraData
+from api.users.models import User, Profile, ExtraData, CorporalMeditions
 from import_export.admin import ExportActionMixin
 
 
@@ -29,3 +29,8 @@ class UserAdm(ExportActionMixin, admin.ModelAdmin):
 admin.site.register(User, UserAdm)
 admin.site.register(Profile)
 admin.site.register(ExtraData)
+
+
+@admin.register(CorporalMeditions)
+class CorporalMeditionsAdmin(ExportActionMixin, admin.ModelAdmin):
+    list_display = ('user', 'height', 'weight', 'fat')
