@@ -1,2 +1,2 @@
 
-from .users import ResetPasswordSerializer, UserResponseSerializer, UserModelSerializer, UserLoginSerializer, UserSignUpSerializer
+from .users import CorporalMeditionsModelSerializer, ResetPasswordSerializer, UserResponseSerializer, UserModelSerializer, UserLoginSerializer, UserSignUpSerializer

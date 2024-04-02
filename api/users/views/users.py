@@ -19,9 +19,9 @@ from rest_framework.permissions import (
 
 
 # Models
-from api.users.models import User
+from api.users.models import User, CorporalMeditions
 # Serializers
-from api.users.serializers import ResetPasswordSerializer, UserResponseSerializer, UserLoginSerializer, UserModelSerializer, UserSignUpSerializer
+from api.users.serializers import CorporalMeditionsModelSerializer, ResetPasswordSerializer, UserResponseSerializer, UserLoginSerializer, UserModelSerializer, UserSignUpSerializer
 
 
 class UserViewSet(mixins.RetrieveModelMixin,
@@ -95,3 +95,27 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         response.data = data
         return response
+
+
+class CorporalMeditionsViewSet(mixins.RetrieveModelMixin,
+                               mixins.UpdateModelMixin,
+                               mixins.CreateModelMixin,
+                               mixins.ListModelMixin,
+                               mixins.DestroyModelMixin,
+                               viewsets.GenericViewSet,):
+
+    def get_permissions(self):
+        """Assign permissions based on action."""
+        permissions = [IsAuthenticated]
+        return [p() for p in permissions]
+
+    def get_serializer_class(self):
+        if self.action in ['retrieve', 'list']:
+            return CorporalMeditionsModelSerializer
+        else:
+            return CorporalMeditionsModelSerializer
+
+    filter_backends = (filters.DjangoFilterBackend,)
+    queryset = CorporalMeditions.objects.all()
+    serializer_class = CorporalMeditionsModelSerializer
+    lookup_field = 'id'

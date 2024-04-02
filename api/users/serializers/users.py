@@ -8,7 +8,7 @@ from django.contrib.auth import password_validation, authenticate
 from django.core.validators import RegexValidator
 
 # Models
-from api.users.models import User, Profile
+from api.users.models import User, Profile, CorporalMeditions
 from api.move4it.models import Enterprise, Group
 from api.move4it.serializers import EnterpriseSerializer, GroupSerializer
 
@@ -25,17 +25,28 @@ class UserModelSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CorporalMeditionsModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CorporalMeditions
+        fields = '__all__'
+
+
 class UserResponseSerializer(serializers.ModelSerializer):
     team = serializers.SerializerMethodField('get_team')
+    meditions = serializers.SerializerMethodField('get_meditions')
 
     def get_team(self, user):
         groups = Group.objects.filter(user=user).first()
         return GroupSerializer(groups, many=False).data
 
+    def get_meditions(self, user):
+        meditions = CorporalMeditions.objects.filter(user=user)
+        return CorporalMeditionsModelSerializer(meditions, many=True).data
+
     class Meta:
         model = User
         fields = ('id', 'username', 'email', 'first_name', 'last_name',
-                  'identification_number', 'phone_number', 'type_user', 'date_of_birth', 'bio', 'team')
+                  'identification_number', 'phone_number', 'type_user', 'date_of_birth', 'bio', 'team', 'meditions')
 
 
 class ResetPasswordSerializer(serializers.Serializer):
