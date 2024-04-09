@@ -1,4 +1,4 @@
-from api.move4it.models import Blog, Enterprise, Group
+from api.move4it.models import Blog, Enterprise, Group, Activity, ActivityCategory
 from import_export.admin import ExportActionMixin
 from django.contrib import admin
 
@@ -42,3 +42,13 @@ class GroupAdmin(ExportActionMixin, admin.ModelAdmin):
 
     list_display = ('name', 'enterprise',
                     'get_equipment_count', 'get_leader_name')
+
+
+@admin.register(Activity)
+class ActivityAdmin(ExportActionMixin, admin.ModelAdmin):
+    list_display = ('name', 'category')
+
+
+@admin.register(ActivityCategory)
+class ActivityCategoryAdmin(ExportActionMixin, admin.ModelAdmin):
+    list_display = ('name', 'description')
