@@ -8,6 +8,7 @@ from django.contrib.auth.models import AbstractUser
 from api.utils.models import ModelApi
 from api.move4it.models import Group
 import re
+import json
 
 
 class User(ModelApi, AbstractUser):
@@ -21,7 +22,10 @@ class User(ModelApi, AbstractUser):
     )
 
     identification_number = models.CharField(
-        max_length=80, verbose_name='Número de identificación(rut o pasaporte)')
+        max_length=80, verbose_name='(rut o pasaporte)')
+    gengers = [('M', 'Masculino'), ('F', 'Femenino')]
+    gender = models.CharField(
+        max_length=30, verbose_name='Género', blank=True, null=True, choices=gengers)
     phone_number = models.CharField(
         verbose_name='Telefono', max_length=500, blank=True, null=True)
 
@@ -35,21 +39,18 @@ class User(ModelApi, AbstractUser):
         max_length=3, verbose_name='Tipo de usuario', choices=PROFILES)
 
     REQUIRED_FIELDS = ['first_name', 'last_name',
-                       'identification_number', 'type_user']
-
-    date_of_birth = models.DateField(
-        verbose_name='Fecha de nacimiento', blank=True, null=True)
-    bio = models.TextField(verbose_name='Biografía', blank=True, null=True)
+                       'identification_number', 'type_user',]
+    points = models.IntegerField(default=0, verbose_name='puntos')
 
     is_verified = models.BooleanField(
-        verbose_name='vertificado',
-        default=False,
+        verbose_name='verificado',
+        default=True,
         help_text='Se establece en verdadero cuando el usuario ha verificado su dirección de correo electrónico'
     )
 
     is_leader = models.BooleanField(
         verbose_name='es lider',
-        default=True,
+        default=False,
         help_text='Se establece en verdadero cuando el usuario es lider de su grupo'
     )
 
@@ -65,13 +66,16 @@ class User(ModelApi, AbstractUser):
     group_participation = models.ForeignKey(
         Group, on_delete=models.CASCADE, verbose_name='Equipo de participación', null=True, blank=True)
 
+    class Meta:
+        verbose_name = 'Usuario'
+        verbose_name_plural = 'Usuarios'
+
     def save(self, *args, **kwargs):
-        self.username = f"{str(self.first_name).lower()}.{str(self.last_name).lower()}.{self.id}"
-        self.username = re.sub(r'\.', '', self.username)
-        self.username = re.sub(r'\W+', '', self.username)
+        # Check if this is a new user
         if len(self.identification_number) == 9:
             self.identification_number = f"{self.identification_number[:2]}.{self.identification_number[2:5]}.{self.identification_number[5:8]}-{self.identification_number[8]}"
         elif len(self.identification_number) == 10:
             self.identification_number = f"{self.identification_number[:2]}.{self.identification_number[2:5]}.{self.identification_number[5:8]}-{self.identification_number[8:]}"
 
-        super(User, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
+

@@ -52,6 +52,7 @@ THIRD_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'django_filters',
+    "import_export",
     'django_rest_passwordreset'
 ]
 

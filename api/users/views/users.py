@@ -51,6 +51,19 @@ class UserViewSet(mixins.RetrieveModelMixin,
     serializer_class = UserModelSerializer
     lookup_field = 'username'
 
+    class FilterUser(filters.FilterSet):
+        class Meta:
+            model = User
+            fields = {
+                'username': ['exact'],
+                'email': ['exact'],
+                "first_name": ['exact'],
+                "last_name": ['exact'],
+                "is_leader": ['exact'],
+            }
+
+    filterset_class = FilterUser
+
     @action(detail=False, methods=['post'])
     def reset_password(self, request):
         serializer = ResetPasswordSerializer(data=request.data)
@@ -116,6 +129,19 @@ class CorporalMeditionsViewSet(mixins.RetrieveModelMixin,
             return CorporalMeditionsModelSerializer
 
     filter_backends = (filters.DjangoFilterBackend,)
+
+    class FilterCorporalMedition(filters.FilterSet):
+        class Meta:
+            model = CorporalMeditions
+            fields = {
+                'profile': ['exact'],
+                'weight': ['exact'],
+                "fat": ['exact'],
+                "created": ['exact', 'gte', 'lte', 'lt', 'gt', 'year', 'month', 'day', 'week_day', 'hour', 'minute', 'second', 'isnull', 'regex', 'iregex'],
+            }
+
+    filterset_class = FilterCorporalMedition
+
     queryset = CorporalMeditions.objects.all()
     serializer_class = CorporalMeditionsModelSerializer
     lookup_field = 'id'
