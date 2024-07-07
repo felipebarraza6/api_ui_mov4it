@@ -53,7 +53,7 @@ class Profile(ModelApi):
 
 class CorporalMeditions(ModelApi):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    height = models.FloatField(verbose_name='Altura', blank=True, null=True)
+    height = models.DecimalField(verbose_name='Altura', max_digits=5, decimal_places=2, blank=True, null=True)
     weight = models.FloatField(verbose_name='Peso', blank=True, null=True)
     fat = models.FloatField(verbose_name='Grasa', blank=True, null=True)
 

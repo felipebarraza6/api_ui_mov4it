@@ -102,8 +102,6 @@ class UserViewSet(mixins.RetrieveModelMixin,
 
         data = {
             'user': response.data,
-            'profile_data': {
-            }
         }
 
         response.data = data

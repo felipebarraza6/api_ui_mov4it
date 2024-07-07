@@ -73,7 +73,7 @@ class FileRegisterActivityAdmin(ExportActionMixin, admin.ModelAdmin):
 
 @admin.register(RegisterActivity)
 class RegisterActivityAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = ('activity', "get_users", "get_groups","get_enterprises", 'observation', 'file', "is_active")
+    list_display = ('activity', "get_users", "get_groups","get_enterprises", 'observation', "is_active")
     list_filter = ('activity', 'users', 'groups', 'enterprises', 'activity',)
     search_fields = ('activity', )
     date_hierarchy = 'created'

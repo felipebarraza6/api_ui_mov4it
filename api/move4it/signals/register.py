@@ -1,8 +1,8 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.db import transaction
-from django.contrib.auth.models import User
 from api.move4it.models import RegisterActivity, Group, Enterprise  # Asegúrate de importar tus modelos
+from api.users.models import User
 
 @receiver(post_save, sender=RegisterActivity)
 def update_user(sender, instance, created, **kwargs):
